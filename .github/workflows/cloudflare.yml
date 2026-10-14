@@ -1,0 +1,42 @@
+name: Publish Cloudflare Pages
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: cloudflare-pages
+  cancel-in-progress: false
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: cloudflare-pages
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .node-version
+          cache: pnpm
+      - name: Validate deployment configuration
+        env:
+          CF_PROJECT: ${{ vars.CLOUDFLARE_PROJECT_NAME }}
+          CF_SITE_URL: ${{ vars.CLOUDFLARE_SITE_URL }}
+          CF_ACCOUNT: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          CF_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        run: |
+          test -n "$CF_PROJECT" || { echo "::error::Set CLOUDFLARE_PROJECT_NAME"; exit 1; }
+          test -n "$CF_SITE_URL" || { echo "::error::Set CLOUDFLARE_SITE_URL"; exit 1; }
+          test -n "$CF_ACCOUNT" || { echo "::error::Set CLOUDFLARE_ACCOUNT_ID"; exit 1; }
+          test -n "$CF_TOKEN" || { echo "::error::Set CLOUDFLARE_API_TOKEN"; exit 1; }
+      - run: pnpm install --frozen-lockfile
+      - name: Validate and build
+        env:
+          SITE_URL: ${{ vars.CLOUDFLARE_SITE_URL }}
+          BASE_PATH: /
+          PUBLIC_FORMSPREE_ENDPOINT: ${{ vars.PUBLIC_FORMSPREE_ENDPOINT }}
+        run: pnpm check && pnpm test:unit && pnpm build
+      - uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: pages deploy dist --project-name=${{ vars.CLOUDFLARE_PROJECT_NAME }}

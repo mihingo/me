@@ -1,0 +1,16 @@
+items:
+  - value: 60%+
+    label: faster load
+    detail: About 4s to under 1.5s on a key Microsoft 365 app, measured with the Browser Performance API.
+  - value: "4"
+    label: Microsoft 365 surfaces
+    detail: Teams, Outlook, Word and PowerPoint.
+  - value: "5"
+    label: engineering interns mentored
+    detail: Supporting the next generation of engineers.
+  - value: $5M+
+    label: in legacy debt migrated
+    detail: USD 5M+ migrated to microservices for KPLC.
+  - value: "3"
+    label: countries served
+    detail: Prepayment-retry microservice used in Kenya, Nigeria and Zimbabwe.

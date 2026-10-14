@@ -1,0 +1,14 @@
+---
+import { ArrowLeft } from '@lucide/astro';
+import Layout from '../layouts/Layout.astro';
+import { ui } from '../config/ui';
+import { localPath } from '../lib/content';
+---
+<Layout title={`404 — ${ui.notFound.title}`} noindex>
+  <section class="not-found shell">
+    <p class="meta section-number">404</p>
+    <h1 class="not-found-title">{ui.notFound.title}</h1>
+    <p class="not-found-text">{ui.notFound.description}</p>
+    <a class="button primary" href={localPath('/')}><ArrowLeft size={17} aria-hidden="true" />{ui.back}</a>
+  </section>
+</Layout>

@@ -1,0 +1,57 @@
+---
+import { ArrowUpRight, ArrowRight } from '@lucide/astro';
+import Screens from './Screens.astro';
+import Diagram from './Diagram.astro';
+import Comparison from './Comparison.astro';
+import type { Project } from '../lib/schemas';
+import { localPath } from '../lib/content';
+import { ui } from '../config/ui';
+interface Props { project: Project; index: number }
+const { project, index } = Astro.props;
+const plate = String(index + 1).padStart(2, '0');
+const titleId = `${project.slug}-title`;
+let figures = 0;
+const nextFigure = () => `${index + 1}.${++figures}`;
+const showDiagram = project.architecture && !project.screens;
+---
+<article id={project.slug} class={`story story--${project.layout}${project.layout === 'feature' ? ' on-dark' : ''}`} aria-labelledby={titleId}>
+  <div class="shell story-grid">
+    <header class="story-head">
+      <p class="meta story-kicker"><span>{ui.plate} {plate}</span>{project.kicker && <span>{project.kicker}</span>}</p>
+      <h3 id={titleId} class="story-title" style={`view-transition-name: project-${project.slug}`}>{project.name}</h3>
+      <p class="status"><span class="status-mark" aria-hidden="true"></span>{ui.status[project.status]}{project.statusNote && <span class="status-note">{project.statusNote}</span>}</p>
+    </header>
+
+    <div class="story-visual">
+      {project.screens && <Screens screens={project.screens} figure={nextFigure()} />}
+      {showDiagram && <Diagram diagram={project.architecture!} id={`home-${project.slug}`} figure={nextFigure()} />}
+      {project.comparison && <Comparison comparison={project.comparison} figure={nextFigure()} />}
+      {project.metrics.length > 0 && <dl class="ledger">
+        {project.metrics.map((metric) => <div class="ledger-item">
+          <dt class="ledger-label">{metric.label}</dt>
+          <dd class="ledger-value">{metric.value}</dd>
+          {metric.detail && <dd class="ledger-detail meta">{metric.detail}</dd>}
+        </div>)}
+      </dl>}
+      {project.image && <img class="story-image" src={localPath(project.image.src)} alt={project.image.alt} loading="lazy" decoding="async" width="1600" height="900" />}
+    </div>
+
+    <div class="story-body">
+      <p class="story-summary">{project.summary}</p>
+      <dl class="facts">
+        <div><dt class="meta">{ui.role}</dt><dd>{project.role}</dd></div>
+        {project.outcome && <div><dt class="meta">{ui.outcome}</dt><dd>{project.outcome}</dd></div>}
+      </dl>
+      {project.highlights.length > 0 && <div class="story-contribution">
+        <h4 class="meta">{ui.contribution}</h4>
+        <ul class="list">{project.highlights.map((item) => <li>{item}</li>)}</ul>
+      </div>}
+      <p class="stack"><span class="meta">{ui.stack}</span> <span>{project.stack.join(' · ')}</span></p>
+      {(project.caseStudy || project.url || project.repo) && <div class="actions">
+        {project.caseStudy && <a class="button primary" href={localPath(`/projects/${project.slug}/`)}>{ui.caseStudy}<ArrowRight size={17} aria-hidden="true" /></a>}
+        {project.url && <a class="text-link" href={project.url}>{project.urlLabel || ui.projectLink}<ArrowUpRight size={17} aria-hidden="true" /></a>}
+        {project.repo === 'private' ? <span class="muted small">{ui.privateRepo}</span> : project.repo && <a class="text-link" href={project.repo}>{ui.source}<ArrowUpRight size={17} aria-hidden="true" /></a>}
+      </div>}
+    </div>
+  </div>
+</article>

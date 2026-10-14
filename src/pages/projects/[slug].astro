@@ -1,0 +1,48 @@
+---
+import { getCollection } from 'astro:content';
+import { ArrowLeft, ArrowUpRight } from '@lucide/astro';
+import Layout from '../../layouts/Layout.astro';
+import Diagram from '../../components/Diagram.astro';
+import Screens from '../../components/Screens.astro';
+import Comparison from '../../components/Comparison.astro';
+import type { Project } from '../../lib/schemas';
+import { localPath } from '../../lib/content';
+import { ui } from '../../config/ui';
+export async function getStaticPaths() {
+  const projects = await getCollection('projects');
+  return projects.filter((entry) => entry.data.visible && entry.data.caseStudy).map((entry) => ({ params: { slug: entry.data.slug }, props: { project: entry.data } }));
+}
+interface Props { project: Project }
+const { project } = Astro.props;
+const study = project.caseStudy!;
+let figures = 0;
+const nextFigure = () => String(++figures);
+---
+<Layout title={`${project.name} — Case study`} description={project.summary}>
+  <article class="case-study">
+    <header class="case-hero on-dark">
+      <div class="shell">
+        <a class="text-link back-link" href={`${localPath('/')}#${project.slug}`}><ArrowLeft size={17} aria-hidden="true" />{ui.back}</a>
+        <p class="meta story-kicker">{project.kicker && <span>{project.kicker}</span>}<span>{project.role}</span></p>
+        <h1 class="case-title" style={`view-transition-name: project-${project.slug}`}>{project.name}</h1>
+        <p class="case-lede">{project.summary}</p>
+        <div class="case-hero-foot">
+          <p class="status"><span class="status-mark" aria-hidden="true"></span>{ui.status[project.status]}{project.statusNote && <span class="status-note">{project.statusNote}</span>}</p>
+          {project.url && <a class="button primary" href={project.url}>{project.urlLabel || ui.projectLink}<ArrowUpRight size={18} aria-hidden="true" /></a>}
+        </div>
+        {project.screens && <Screens screens={project.screens} figure={nextFigure()} eager />}
+      </div>
+    </header>
+
+    <div class="shell case-body">
+      <section class="case-section" aria-labelledby="case-context"><h2 id="case-context" class="meta case-label">{ui.problem}</h2><p class="case-text">{study.problem}</p></section>
+      <section class="case-section" aria-labelledby="case-approach"><h2 id="case-approach" class="meta case-label">{ui.approachHeading}</h2><p class="case-text">{study.approach}</p></section>
+      {project.architecture && <div class="case-figure"><Diagram diagram={project.architecture} id={`case-${project.slug}`} figure={nextFigure()} /></div>}
+      {project.comparison && <div class="case-figure"><Comparison comparison={project.comparison} figure={nextFigure()} /></div>}
+      {study.sections.map((section, index) => <section class="case-section" aria-labelledby={`case-section-${index}`}><h2 id={`case-section-${index}`} class="meta case-label">{section.heading}</h2><p class="case-text">{section.body}</p></section>)}
+      <section class="case-section" aria-labelledby="case-outcomes"><h2 id="case-outcomes" class="meta case-label">{ui.outcomes}</h2><ul class="list case-text">{study.outcomes.map((outcome) => <li>{outcome}</li>)}</ul></section>
+      <section class="case-section" aria-labelledby="case-stack"><h2 id="case-stack" class="meta case-label">{ui.stack}</h2><p class="case-text stack-text">{project.stack.join(' · ')}</p></section>
+      <a class="text-link" href={`${localPath('/')}#work`}><ArrowLeft size={17} aria-hidden="true" />{ui.back}</a>
+    </div>
+  </article>
+</Layout>

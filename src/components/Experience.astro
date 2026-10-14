@@ -1,0 +1,30 @@
+---
+import { ChevronDown } from '@lucide/astro';
+import { groupRoles, duration, formatMonth } from '../lib/content';
+import type { Experience } from '../lib/schemas';
+import { ui } from '../config/ui';
+interface Props { roles: Experience[] }
+const groups = groupRoles(Astro.props.roles);
+---
+<ol class="timeline">
+  {groups.map((group) => <li class="company" data-company={group.id}>
+    <h4 class="company-name">{group.companyUrl ? <a href={group.companyUrl}>{group.company}</a> : group.company}</h4>
+    <div class="company-roles">
+      {group.roles.map((role) => <details class="role" open={role.featured} data-start={role.start}>
+        <summary>
+          <span class="role-line">
+            <span class="role-title">{role.title}</span>
+            <span class="role-dates meta">{formatMonth(role.start)} — {role.end === 'present' ? ui.present : formatMonth(role.end)}</span>
+          </span>
+          <span class="role-meta meta"><span>{duration(role.start, role.end)}</span><span>{role.location}{role.mode && ` · ${ui.mode[role.mode]}`}</span>{role.client && <span>{ui.client}: {role.client}</span>}</span>
+          <span class="role-summary">{role.summary}</span>
+          <span class="disclosure-label meta">{ui.roleDetails}<ChevronDown class="disclosure-icon" size={16} aria-hidden="true" /></span>
+        </summary>
+        <div class="role-body">
+          <ul class="list">{role.bullets.map((bullet) => <li>{bullet}</li>)}</ul>
+          <p class="stack"><span class="meta">{ui.stack}</span> <span>{role.tags.join(' · ')}</span></p>
+        </div>
+      </details>)}
+    </div>
+  </li>)}
+</ol>

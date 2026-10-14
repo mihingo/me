@@ -1,0 +1,14 @@
+# TODO: Confirm title, start/end dates, summary and bullets before publishing.
+# Dates are intentionally omitted; no unconfirmed dates are exposed.
+companyId: microsoft
+company: Microsoft
+title: "[TODO: Confirm role title]"
+location: Nairobi
+visible: false
+featured: false
+summary: "[TODO: Describe model post-training / RLEs, Frontier / Copilot Tuning work.]"
+bullets:
+  - "[TODO: Add a confirmed contribution and outcome.]"
+tags:
+  - Model post-training
+  - RLEs

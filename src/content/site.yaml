@@ -1,0 +1,68 @@
+name: Kelvin Mihingo N.
+monogram: KM
+role: Software Engineer
+portrait:
+  src: ../assets/portrait.jpeg
+  alt: Portrait of Kelvin Mihingo N.
+# *Asterisks* set a phrase in the italic display face; they are stripped elsewhere.
+headline: Software Engineer building *AI-agent platforms* and the *frontend systems* behind them.
+lede: I own and ship ambiguous, cross-team engineering initiatives from architecture through production adoption and general availability.
+about: My work spans Microsoft 365 product and service-integration engineering, reusable AI-agent architecture, and cross-product platform capabilities, with a focus on scalable frontend systems and LLM-powered experiences.
+location: Nairobi, Kenya
+relocation:
+  - Netherlands
+  - Germany
+  - UAE
+  - UK
+  - Ireland
+  - Australia
+email: kmihingo22@gmail.com
+# phone: "+254..."
+social:
+  - label: LinkedIn
+    url: https://linkedin.com/in/mihingo
+  - label: GitHub
+    url: https://github.com/mihingo
+resume:
+  path: /resume.pdf
+  label: Download résumé
+now:
+  - Working on model post-training with RLEs (Frontier / Copilot Tuning)
+  - Building PSMS, a public-safety platform for police services
+nav:
+  - label: Work
+    href: "#work"
+  - label: Approach
+    href: "#approach"
+  - label: Capabilities
+    href: "#capabilities"
+  - label: Record
+    href: "#record"
+  - label: Contact
+    href: "#contact"
+seo:
+  title: Kelvin Mihingo N. — Software Engineer
+  description: Nairobi-based software engineer building AI-agent platforms and scalable frontend systems. Microsoft 365 Copilot engineering, full-stack product work, and PSMS.
+  ogAlt: Kelvin Mihingo N. — Software Engineer building AI-agent platforms and the frontend systems behind them.
+theme:
+  dark:
+    background: "#0A0D14"
+    surface: "#111621"
+    border: "#242B3A"
+    text: "#E8ECF3"
+    muted: "#98A2B5"
+    accent: "#8FA2FF"
+  light:
+    background: "#F4F6F9"
+    surface: "#FFFFFF"
+    border: "#D5DAE3"
+    text: "#0D1117"
+    muted: "#566070"
+    accent: "#2340D3"
+  fonts:
+    heading: Instrument Serif
+    body: Inter Variable
+    mono: JetBrains Mono Variable
+  radius: 4px
+analytics:
+  enabled: false

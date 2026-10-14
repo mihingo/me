@@ -1,0 +1,30 @@
+companyId: microsoft
+company: Microsoft
+title: Software Engineer
+start: "2021-01"
+end: present
+location: Nairobi
+mode: hybrid
+visible: true
+featured: false
+summary: Building shared AI-agent experiences and the platform foundations behind Microsoft 365 Copilot.
+bullets:
+  - Initiated and led the engineering effort to standardize LLM reasoning UX across Microsoft 365 Copilot agents, from early architecture through GA. Primary engineering owner, later co-lead as the effort scaled.
+  - Scaled the shared reasoning experience across Teams, Outlook, Word and PowerPoint, for first- and third-party agents.
+  - "Built reusable platform frameworks and developer abstractions for the Microsoft 365 AI-agent ecosystem: plug-and-play APIs, reusable components, agentic workflow abstractions."
+  - Improved performance of a key Microsoft 365 app by over 60% (about 4s to under 1.5s) using the Browser Performance API.
+  - "Authored technical specs and cross-team architecture guidance: service-client contracts, message consistency, rollout dependencies, production blockers."
+  - Designed and implemented product telemetry (engagement, latency, dwell time, step interactions) that informed staged rollout and GA decisions.
+  - Led architecture, design and code reviews; aligned contracts across teams; planned rollouts; supported production. Established Playwright-based end-to-end regression coverage.
+  - Built AI-powered experiences integrating LLMs with Microsoft 365 content and productivity data (Word, PowerPoint, meetings, tasks, Teams messages).
+tags:
+  - React
+  - TypeScript
+  - Fluent UI v9
+  - Zustand
+  - GraphQL
+  - Playwright
+  - Storybook
+  - Azure DevOps
+  - KQL / Azure Data Explorer
+  - LLM reasoning UX

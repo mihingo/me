@@ -1,0 +1,25 @@
+groups:
+  - name: AI-agent & LLM experiences
+    order: 1
+    evidence: Standardised LLM reasoning UX across Microsoft 365 Copilot agents; built LLM experiences over Word, PowerPoint, meetings, tasks and Teams messages; AI-assisted case analysis in PSMS.
+    items: [AI/LLM engineering, AI-agent experiences, LLM reasoning UX]
+  - name: Frontend & platform architecture
+    order: 2
+    evidence: Reusable frameworks, plug-and-play APIs and components for the Microsoft 365 AI-agent ecosystem; a key Microsoft 365 app made over 60% faster.
+    items: [React, TypeScript, JavaScript, Fluent UI React v9, Zustand, Storybook, frontend architecture, Browser Performance API]
+  - name: Full-stack product engineering
+    order: 3
+    evidence: PSMS end to end — Next.js and Relay over a .NET 8 / HotChocolate GraphQL API on PostgreSQL.
+    items: [Next.js, Relay, GraphQL, HotChocolate, "C# (.NET)", Node.js, PostgreSQL, SQL & NoSQL, full-stack development]
+  - name: Integration & backend systems
+    order: 4
+    evidence: Middleware migrating USD 5M+ of legacy debt; card-present payments; a resilient service for failed Itron prepayment requests.
+    items: [Java, Spring, Maven]
+  - name: Delivery & quality
+    order: 5
+    evidence: Telemetry-informed staged rollout and GA decisions, Playwright end-to-end regression coverage and production support.
+    items: [Playwright, Azure DevOps, CI/CD, telemetry, KQL / Azure Data Explorer, progressive delivery, incident response]
+  - name: Leadership
+    order: 6
+    evidence: Led architecture, design and code reviews and aligned contracts across teams; mentored five engineering interns.
+    items: [technical leadership, cross-team collaboration, mentoring]

@@ -1,0 +1,41 @@
+name: Quality
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .node-version
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm exec playwright install --with-deps chromium
+      - run: pnpm check && pnpm test:unit && pnpm build
+      - run: pnpm test:e2e
+      - run: pnpm test:config
+      - run: pnpm test:form
+      - run: pnpm budget
+      - name: Select audit browser
+        run: echo "CHROME_PATH=$(node -e "console.log(require('@playwright/test').chromium.executablePath())")" >> "$GITHUB_ENV"
+      - run: pnpm lighthouse
+      - name: Test GitHub Pages subpath
+        env:
+          SITE_URL: https://example.com
+          BASE_PATH: /portfolio/
+        run: pnpm build && pnpm exec playwright test --project=mobile-360 --grep 'content, dates|SEO, privacy'
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: quality-reports
+          path: |
+            playwright-report/
+            .lighthouseci/reports/
+          retention-days: 14

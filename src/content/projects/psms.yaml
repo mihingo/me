@@ -1,0 +1,77 @@
+name: Police Service Management System
+shortName: PSMS
+slug: psms
+kicker: Founder / Software Engineer
+role: Founder / Software Engineer
+status: building
+statusNote: Public reporting portal live
+layout: feature
+url: https://kenya.psms.africa
+urlLabel: Visit the live portal
+summary: A full-stack public-safety platform for police services, bringing occurrence reporting, investigations, case management, assignments, analytics and command dashboards into one system.
+highlights:
+  - AI-assisted workflows for case analysis, grounded summaries, report intelligence and decision support.
+  - "Production-oriented foundation: automated testing, secure connectivity, notifications and a Turborepo/Yarn monorepo."
+  - Next.js and Relay over a .NET 8 / HotChocolate GraphQL API, with Entity Framework Core and PostgreSQL.
+  - Azure Front Door Premium, WAF and private connectivity, with Keycloak for identity.
+outcome: In development. The public reporting portal is live at kenya.psms.africa.
+stack:
+  - Next.js
+  - TypeScript
+  - Relay
+  - GraphQL
+  - .NET 8
+  - HotChocolate
+  - Entity Framework Core
+  - PostgreSQL
+  - Docker
+  - Azure
+  - Keycloak
+screens:
+  label: kenya.psms.africa
+  caption: The live public reporting portal, captured October 2026. Portal statistics are cropped out.
+  desktop:
+    base: /images/psms/portal-desktop
+    widths: [960, 1600, 2400]
+    width: 1440
+    height: 624
+    alt: "The live PSMS public reporting portal on desktop: a navy hero reading “Report, Track, Prevent” above search filters for crime type, county and category."
+  mobile:
+    base: /images/psms/portal-mobile
+    widths: [390, 780]
+    width: 390
+    height: 738
+    alt: "The same portal on a phone: the “Report, Track, Prevent” headline above the stacked crime search filters."
+featured: true
+order: 1
+caseStudy:
+  problem: Police-service workflows span reporting, investigations, case management, assignments and command oversight. PSMS brings these capabilities into a public-safety platform.
+  approach: Full-stack development with Next.js, Relay and GraphQL; a .NET 8 / HotChocolate backend; and Entity Framework Core with PostgreSQL. The production-oriented foundation includes automated testing, notifications, Docker, Keycloak, and Azure Front Door Premium, WAF and private connectivity.
+  outcomes:
+    - The public reporting interface is live at kenya.psms.africa.
+    - The wider platform is in development.
+  sections:
+    - heading: AI-assisted, grounded workflows
+      body: Case analysis, grounded summaries, report intelligence and decision support are part of the platform's AI-assisted workflows.
+    - heading: An engineering foundation
+      body: A Turborepo/Yarn monorepo supports the platform, alongside automated testing, secure connectivity and notifications.
+architecture:
+  label: PSMS technology overview
+  description: A conceptual application-layer view of the supplied stack, not a verified deployment or security topology. Hosting and identity use Azure and Keycloak.
+  nodes:
+    - id: interface
+      label: Interface
+      detail: Next.js / Relay
+    - id: api
+      label: Application
+      detail: .NET 8 / GraphQL
+    - id: data
+      label: Data
+      detail: EF Core / PostgreSQL
+  edges:
+    - from: interface
+      to: api
+      label: GraphQL
+    - from: api
+      to: data
+      label: EF Core

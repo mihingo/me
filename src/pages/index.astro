@@ -1,0 +1,178 @@
+---
+import { getCollection, getEntry } from 'astro:content';
+import { Picture } from 'astro:assets';
+import { ArrowUpRight, ArrowDown, Download, Users, BookOpen, GraduationCap } from '@lucide/astro';
+import Layout from '../layouts/Layout.astro';
+import SectionHeading from '../components/SectionHeading.astro';
+import Experience from '../components/Experience.astro';
+import Story from '../components/Story.astro';
+import Emphasis from '../components/Emphasis.astro';
+import ProjectGrid from '../components/ProjectGrid';
+import ContactForm from '../components/ContactForm.astro';
+import { groupRoles, localPath } from '../lib/content';
+import { ui } from '../config/ui';
+
+const [siteEntry, roles, projects, skills, impact, approach, community, education] = await Promise.all([
+  getEntry('site', 'site'), getCollection('experience'), getCollection('projects'),
+  getEntry('skills', 'skills'), getEntry('impact', 'impact'), getEntry('approach', 'approach'),
+  getCollection('community'), getCollection('education'),
+]);
+if (!siteEntry || !skills || !impact || !approach) throw new Error('Missing required site, skills, impact or approach YAML.');
+const site = siteEntry.data;
+const roleData = roles.map((entry) => entry.data);
+const current = groupRoles(roleData)[0]?.roles[0];
+const orderedProjects = projects.map((entry) => entry.data).filter((entry) => entry.visible).sort((a, b) => a.order - b.order || a.name.localeCompare(b.name));
+const featured = orderedProjects.filter((entry) => entry.featured);
+const otherProjects = orderedProjects.filter((entry) => !entry.featured);
+const communityIcons = { mentoring: Users, teaching: BookOpen, curriculum: GraduationCap };
+const builtAt = new Intl.DateTimeFormat('en', { month: 'short', year: 'numeric', timeZone: 'UTC' }).format(new Date());
+---
+<Layout>
+  <section class="hero" aria-labelledby="hero-title">
+    <div class="shell hero-grid">
+      <div class="hero-main">
+        <h1 id="hero-title" class="hero-name"><span class="wordmark-mark" aria-hidden="true"></span>{site.name}</h1>
+        <p class="hero-statement"><Emphasis text={site.headline} /></p>
+        <p class="hero-lede">{site.lede}</p>
+        <div class="actions hero-actions">
+          <a class="button primary" href="#work">{ui.seeWork}<ArrowDown size={17} aria-hidden="true" /></a>
+          <a class="button secondary" href={`mailto:${site.email}`}>{ui.emailMe}<ArrowUpRight size={17} aria-hidden="true" /></a>
+          <a class="text-link" href={localPath(site.resume.path)} download>{site.resume.label}<Download size={16} aria-hidden="true" /></a>
+        </div>
+      </div>
+
+      <aside class="title-block" aria-label={ui.titleBlock.label}>
+        <div class={`tb-identity${site.portrait ? ' has-portrait' : ''}`}>
+          {site.portrait && <Picture
+            src={site.portrait.src}
+            alt={site.portrait.alt}
+            formats={['avif', 'webp']}
+            widths={[152, 304, 408]}
+            sizes="(min-width: 640px) 152px, 30vw"
+            quality={78}
+            class="tb-portrait"
+            pictureAttributes={{ class: 'tb-portrait-frame' }}
+          />}
+          <dl>
+            {current && <div class="tb-cell"><dt class="meta">{ui.titleBlock.currently}</dt><dd>{current.title}, {current.company}</dd></div>}
+            <div class="tb-cell"><dt class="meta">{ui.titleBlock.based}</dt><dd>{site.location}</dd></div>
+            <div class="tb-cell"><dt class="meta">{ui.titleBlock.revised}</dt><dd>{builtAt}</dd></div>
+          </dl>
+        </div>
+        <dl>
+          {site.now.length > 0 && <div class="tb-cell"><dt class="meta">{ui.titleBlock.building}</dt><dd><ul>{site.now.map((item) => <li>{item}</li>)}</ul></dd></div>}
+          {site.relocation.length > 0 && <div class="tb-cell"><dt class="meta">{ui.titleBlock.relocation}</dt><dd>{site.relocation.join(' · ')}</dd></div>}
+        </dl>
+      </aside>
+    </div>
+
+    {featured.length > 0 && <nav class="shell work-index" aria-label={ui.index}>
+      <p class="meta work-index-label">{ui.index}</p>
+      <ol>
+        {featured.map((project, index) => <li>
+          <a href={`#${project.slug}`}>
+            <span class="meta wi-number">{String(index + 1).padStart(2, '0')}</span>
+            <span class="wi-name">{project.shortName ?? project.name}</span>
+            <span class="wi-kicker">{project.kicker}</span>
+            <span class="wi-status meta"><span class="status-mark" aria-hidden="true"></span>{ui.status[project.status]}</span>
+            <ArrowDown class="wi-arrow" size={18} aria-hidden="true" />
+          </a>
+        </li>)}
+      </ol>
+    </nav>}
+  </section>
+
+  {orderedProjects.length > 0 && <section id="work" class="section work" aria-labelledby="work-title">
+    <div class="shell"><SectionHeading id="work-title" number={ui.work.number} title={ui.work.title} intro={ui.work.intro} /></div>
+    <div class="stories">{featured.map((project, index) => <Story project={project} index={index} />)}</div>
+    {otherProjects.length > 0 && <div class="shell more-projects"><h3 class="subheading">{ui.moreProjects}</h3><ProjectGrid projects={otherProjects} base={localPath('/')} client:visible /></div>}
+  </section>}
+
+  <section id="approach" class="section approach" aria-labelledby="approach-title">
+    <div class="shell split">
+      <SectionHeading id="approach-title" number={ui.approach.number} title={ui.approach.title} intro={site.about} />
+      <ol class="principles">
+        {approach.data.principles.map((principle, index) => <li class="principle">
+          <span class="meta principle-number" aria-hidden="true">{String(index + 1).padStart(2, '0')}</span>
+          <div>
+            <h3 class="principle-title">{principle.title}</h3>
+            <p>{principle.body}</p>
+            <p class="principle-evidence"><span class="meta">{ui.evidence}</span> {principle.evidence}</p>
+          </div>
+        </li>)}
+      </ol>
+    </div>
+  </section>
+
+  <section id="capabilities" class="section capabilities" aria-labelledby="capabilities-title">
+    <div class="shell">
+      <SectionHeading id="capabilities-title" number={ui.capabilities.number} title={ui.capabilities.title} intro={ui.capabilities.intro} />
+      <ul class="capability-grid">
+        {[...skills.data.groups].sort((a, b) => a.order - b.order).map((group) => <li class="capability">
+          <h3>{group.name}</h3>
+          {group.evidence && <p>{group.evidence}</p>}
+          <p class="capability-tools meta">{group.items.join(' · ')}</p>
+        </li>)}
+      </ul>
+    </div>
+  </section>
+
+  <section id="record" class="section record" aria-labelledby="record-title">
+    <div class="shell">
+      <SectionHeading id="record-title" number={ui.record.number} title={ui.record.title} intro={ui.record.intro} />
+      <div id="impact" class="impact">
+        <h3 class="meta subheading-meta">{ui.impact}</h3>
+        <ul class="impact-list">
+          {impact.data.items.map((item) => <li class="metric"><strong>{item.value}</strong><span class="metric-label">{item.label}</span><span class="metric-detail">{item.detail}</span></li>)}
+        </ul>
+      </div>
+      <div class="record-grid">
+        <div id="experience" class="record-experience">
+          <h3 class="meta subheading-meta">{ui.experience}</h3>
+          <Experience roles={roleData} />
+        </div>
+        <div class="record-aside">
+          <div id="community">
+            <h3 class="meta subheading-meta">{ui.community}</h3>
+            <ul class="community-list">{community.map((entry) => entry.data).filter((entry) => entry.visible).sort((a, b) => a.order - b.order).map((entry) => {
+              const Icon = communityIcons[entry.icon];
+              return <li><Icon size={20} aria-hidden="true" /><div><h4>{entry.title}</h4><p>{entry.description}</p></div></li>;
+            })}</ul>
+          </div>
+          <div id="education">
+            <h3 class="meta subheading-meta">{ui.education}</h3>
+            {education.map((entry) => entry.data).filter((entry) => entry.visible).sort((a, b) => a.order - b.order).map((entry) => <div class="education-entry">
+              <h4>{entry.degree}</h4>
+              <p>{entry.institution}</p>
+              <p class="meta">{entry.start} — {entry.end} · {entry.classification}</p>
+            </div>)}
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact" class="contact on-dark" aria-labelledby="contact-title">
+    <div class="shell contact-grid">
+      <div>
+        <p class="meta section-number" aria-hidden="true">{ui.contactSection.number}</p>
+        <h2 id="contact-title" class="contact-title">{ui.contactSection.title}</h2>
+        <p class="contact-intro">{ui.contactSection.intro}</p>
+        <a class="contact-email" href={`mailto:${site.email}`} aria-label={`${ui.emailLabel}: ${site.email}`}>{site.email}<ArrowUpRight size={26} aria-hidden="true" /></a>
+        <ContactForm email={site.email} name={site.name} />
+      </div>
+      <div class="contact-side">
+        <ul class="contact-links">
+          {site.social.map((link) => <li><a class="text-link" href={link.url}>{link.label}<ArrowUpRight size={16} aria-hidden="true" /></a></li>)}
+          <li><a class="text-link" href={localPath(site.resume.path)} download>{site.resume.label}<Download size={16} aria-hidden="true" /></a></li>
+          {site.phone && <li><a class="text-link" href={`tel:${site.phone}`}>{site.phone}</a></li>}
+        </ul>
+        <p class="small muted">{ui.githubNote}</p>
+        <dl class="contact-facts">
+          <div><dt class="meta">{ui.titleBlock.based}</dt><dd>{site.location}</dd></div>
+          <div><dt class="meta">{ui.titleBlock.relocation}</dt><dd>{site.relocation.join(' · ')}</dd></div>
+        </dl>
+      </div>
+    </div>
+  </section>
+</Layout>

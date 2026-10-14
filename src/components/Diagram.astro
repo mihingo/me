@@ -1,0 +1,67 @@
+---
+import type { Diagram as DiagramData } from '../lib/schemas';
+import { diagramLevels } from '../lib/content';
+import { ui } from '../config/ui';
+interface Props { diagram: DiagramData; id: string; figure?: string }
+const { diagram, id, figure } = Astro.props;
+const levels = diagramLevels(diagram);
+const hasEdgeLabels = diagram.edges.some((edge) => edge.label);
+const nodeWidth = 232;
+const gapX = hasEdgeLabels ? 96 : 72;
+const gapY = 12;
+const height = (node: DiagramData['nodes'][number]) => node.detail ? 64 : 46;
+const columnHeight = (nodes: DiagramData['nodes']) => nodes.reduce((sum, node) => sum + height(node), 0) + gapY * (nodes.length - 1);
+const totalHeight = Math.max(...levels.map(columnHeight));
+const totalWidth = levels.length * nodeWidth + (levels.length - 1) * gapX;
+const boxes = new Map<string, { x: number; y: number; h: number }>();
+levels.forEach((nodes, column) => {
+  let y = (totalHeight - columnHeight(nodes)) / 2;
+  for (const node of nodes) {
+    boxes.set(node.id, { x: column * (nodeWidth + gapX), y, h: height(node) });
+    y += height(node) + gapY;
+  }
+});
+const pad = 2;
+const edges = diagram.edges.map((edge) => {
+  const from = boxes.get(edge.from)!;
+  const to = boxes.get(edge.to)!;
+  const x1 = from.x + nodeWidth;
+  const y1 = from.y + from.h / 2;
+  const x2 = to.x - 6;
+  const y2 = to.y + to.h / 2;
+  const mid = (x1 + x2) / 2;
+  return { ...edge, path: `M ${x1} ${y1} C ${mid} ${y1}, ${mid} ${y2}, ${x2} ${y2}`, labelX: mid, labelY: Math.min(y1, y2) - 8 };
+});
+const labelFor = (nodeId: string) => diagram.nodes.find((node) => node.id === nodeId)?.label;
+const transitions = levels.slice(0, -1).map((nodes) => [...new Set(diagram.edges.filter((edge) => nodes.some((node) => node.id === edge.from) && edge.label).map((edge) => edge.label))]);
+---
+<figure class="diagram">
+  <figcaption class="figure-caption"><span class="meta">{figure && `${ui.figure} ${figure} — `}{diagram.label}</span></figcaption>
+  <svg class="diagram-wide" viewBox={`${-pad} ${-pad - 18} ${totalWidth + pad * 2} ${totalHeight + pad * 2 + 18}`} role="img" aria-labelledby={`${id}-title ${id}-desc`}>
+    <title id={`${id}-title`}>{diagram.label}</title>
+    <desc id={`${id}-desc`}>{diagram.description}</desc>
+    <defs><marker id={`${id}-arrow`} viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" class="diagram-arrow" /></marker></defs>
+    {edges.map((edge) => <path d={edge.path} class="diagram-edge" marker-end={`url(#${id}-arrow)`} />)}
+    {edges.filter((edge) => edge.label).map((edge) => <text x={edge.labelX} y={edge.labelY} text-anchor="middle" class="diagram-edge-label">{edge.label}</text>)}
+    {diagram.nodes.map((node) => {
+      const box = boxes.get(node.id)!;
+      return <g transform={`translate(${box.x}, ${box.y})`}>
+        <rect width={nodeWidth} height={box.h} rx="3" class="diagram-node" />
+        <rect width="5" height="5" x="12" y={node.detail ? 19 : box.h / 2 - 2.5} class="diagram-mark" />
+        <text x="26" y={node.detail ? 27 : box.h / 2 + 5} class="diagram-label">{node.label}</text>
+        {node.detail && <text x="26" y="47" class="diagram-detail">{node.detail}</text>}
+      </g>;
+    })}
+  </svg>
+  <ol class="diagram-narrow">
+    {levels.map((nodes, index) => <li>
+      <ul class="diagram-level">{nodes.map((node) => <li class="diagram-chip"><span class="diagram-chip-label">{node.label}</span>{node.detail && <span class="diagram-chip-detail">{node.detail}</span>}</li>)}</ul>
+      {index < levels.length - 1 && <span class="diagram-flow" aria-hidden="true">↓{transitions[index]!.length > 0 && <span>{transitions[index]!.join(' · ')}</span>}</span>}
+    </li>)}
+  </ol>
+  <p class="diagram-note">{diagram.description}</p>
+  <details class="diagram-text">
+    <summary>{ui.architectureText}</summary>
+    <ul class="list">{diagram.edges.map((edge) => <li>{labelFor(edge.from)} → {labelFor(edge.to)}{edge.label && `: ${edge.label}`}</li>)}</ul>
+  </details>
+</figure>

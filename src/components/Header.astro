@@ -1,0 +1,65 @@
+---
+import { ArrowUpRight, X, Menu } from '@lucide/astro';
+import ThemeToggle from './ThemeToggle.astro';
+import { ui } from '../config/ui';
+import { localPath } from '../lib/content';
+import type { Site } from '../lib/schemas';
+interface Props { site: Pick<Site, 'name' | 'role' | 'nav' | 'email'> }
+const { site } = Astro.props;
+const href = (url: string) => url.startsWith('#') ? `${localPath('/')}${url}` : url;
+---
+<header class="site-header">
+  <div class="shell header-inner">
+    <a class="wordmark" href={localPath('/')} aria-label={`${site.name} — ${ui.brandLabel}`}>
+      <span class="wordmark-mark" aria-hidden="true"></span>
+      <span>{site.name}</span>
+      <span class="wordmark-role" aria-hidden="true">{site.role}</span>
+    </a>
+    <nav class="desktop-nav" aria-label={ui.navigation}>
+      {site.nav.map((item) => <a class="nav-link" href={href(item.href)}>{item.label}</a>)}
+    </nav>
+    <div class="header-actions">
+      <ThemeToggle />
+      <details class="mobile-menu" data-menu>
+        <summary><Menu size={18} aria-hidden="true" />{ui.menu}</summary>
+        <div class="menu-backdrop" data-menu-backdrop></div>
+        <div class="menu-sheet">
+          <div class="menu-heading"><span class="meta">{ui.navigation}</span><button type="button" data-close-menu aria-label={ui.closeMenu} hidden><X size={22} aria-hidden="true" /></button></div>
+          <nav aria-label={`${ui.navigation} — ${ui.menu}`}>
+            {site.nav.map((item, index) => <a href={href(item.href)}><span class="meta" aria-hidden="true">{String(index + 1).padStart(2, '0')}</span>{item.label}<ArrowUpRight size={20} aria-hidden="true" /></a>)}
+          </nav>
+          <a class="menu-email" href={`mailto:${site.email}`}>{site.email}</a>
+        </div>
+      </details>
+    </div>
+  </div>
+</header>
+<script>
+  const menu = document.querySelector<HTMLDetailsElement>('[data-menu]');
+  const close = menu?.querySelector<HTMLButtonElement>('[data-close-menu]');
+  const summary = menu?.querySelector('summary');
+  if (menu && close && summary) {
+    close.hidden = false;
+    const dismiss = () => { menu.open = false; summary.focus(); };
+    close.addEventListener('click', dismiss);
+    menu.querySelector('[data-menu-backdrop]')?.addEventListener('click', dismiss);
+    menu.querySelectorAll('nav a').forEach((link) => link.addEventListener('click', () => { menu.open = false; }));
+    menu.addEventListener('toggle', () => {
+      summary.setAttribute('aria-expanded', String(menu.open));
+      document.documentElement.classList.toggle('menu-open', menu.open);
+      if (menu.open) close.focus();
+    });
+    document.addEventListener('keydown', (event) => {
+      if (!menu.open) return;
+      if (event.key === 'Escape') dismiss();
+      if (event.key === 'Tab') {
+        const items = [...menu.querySelectorAll<HTMLElement>('summary, button, a')];
+        const first = items[0];
+        const last = items.at(-1);
+        if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last?.focus(); }
+        else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first?.focus(); }
+      }
+    });
+    matchMedia('(min-width: 768px)').addEventListener('change', (event) => { if (event.matches) menu.open = false; });
+  }
+</script>

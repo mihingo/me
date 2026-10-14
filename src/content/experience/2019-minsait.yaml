@@ -1,0 +1,22 @@
+companyId: minsait
+company: Minsait (formerly Indra Sistemas)
+title: Backend Engineer
+start: "2019-01"
+end: "2020-12"
+location: Nairobi
+client: Kenya Power & Lighting Company (KPLC)
+featured: false
+summary: Microservices, payment integrations and resilient utility systems for Kenya Power.
+bullets:
+  - Built a middleware application to migrate USD 5M+ of legacy debt to a microservices architecture.
+  - Integrated card-present payment capabilities into the revenue collection system.
+  - Redesigned the customer onboarding and self-service flow for tenancy accounts.
+  - Led the Interfaces Module (Indra InCMS to third-party systems); built a resilient microservice for failed prepayment API requests (Itron), used in Kenya, Nigeria and Zimbabwe.
+tags:
+  - Java
+  - Spring Boot
+  - microservices
+  - SOAP/SAP integration
+  - Oracle
+  - Jenkins
+  - payments

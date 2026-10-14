@@ -1,0 +1,17 @@
+# Principles are framing; every `evidence` line must be a verified fact.
+principles:
+  - title: Own the whole arc
+    body: I take ambiguous, cross-team initiatives from first architecture through production adoption and general availability.
+    evidence: Initiated the effort to standardise LLM reasoning UX across Microsoft 365 Copilot agents — primary engineering owner, later co-lead as it scaled.
+  - title: Build the platform, not the one-off
+    body: I favour reusable frameworks, components and APIs that other teams can build on.
+    evidence: Plug-and-play APIs, reusable components and agentic workflow abstractions for the Microsoft 365 AI-agent ecosystem.
+  - title: Measure, then decide
+    body: I instrument what I ship, so rollout and performance decisions rest on evidence.
+    evidence: Telemetry on engagement, latency, dwell time and step interactions informed staged rollout and GA; Browser Performance API measurement behind a 60%+ faster load.
+  - title: Align in writing
+    body: I put contracts, dependencies and risks on paper early, where every team can see them.
+    evidence: Authored specs and guidance on service-client contracts, message consistency, rollout dependencies and production blockers.
+  - title: Grow the people around me
+    body: I invest in the engineers and educators who come next.
+    evidence: Mentored five engineering interns; led AI and software-engineering upskilling for Kenyan university lecturers; contributed to curriculum reviews.

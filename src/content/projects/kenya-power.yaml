@@ -1,0 +1,29 @@
+name: Revenue, payments and prepayment systems for Kenya Power
+shortName: Kenya Power (KPLC)
+slug: kenya-power
+kicker: Minsait (formerly Indra Sistemas) · 2019 – 2020
+role: Backend Engineer for client Kenya Power & Lighting Company (KPLC). Led the Interfaces Module (Indra InCMS to third-party systems).
+status: delivered
+layout: ledger
+summary: Backend engineering for Kenya Power's revenue collection and customer systems — migrating legacy debt, integrating payments and keeping prepayment requests resilient.
+highlights:
+  - Built a middleware application to migrate USD 5M+ of legacy debt to a microservices architecture.
+  - Built a resilient microservice for failed prepayment API requests (Itron), used in Kenya, Nigeria and Zimbabwe.
+  - Integrated card-present payment capabilities into the revenue collection system.
+  - Redesigned the customer onboarding and self-service flow for tenancy accounts.
+metrics:
+  - value: USD 5M+
+    label: legacy debt migrated to a microservices architecture
+  - value: "3"
+    label: countries using the prepayment-retry microservice
+    detail: Kenya · Nigeria · Zimbabwe
+stack:
+  - Java
+  - Spring Boot
+  - microservices
+  - SOAP/SAP integration
+  - Oracle
+  - Jenkins
+featured: true
+inResume: false
+order: 3

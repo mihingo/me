@@ -1,0 +1,38 @@
+---
+import type { Project } from '../lib/schemas';
+import { srcset, fallbackSrc } from '../lib/content';
+import { ui } from '../config/ui';
+interface Props { screens: NonNullable<Project['screens']>; figure?: string; eager?: boolean }
+const { screens, figure, eager = false } = Astro.props;
+const loading = eager ? 'eager' : 'lazy';
+---
+<figure class={`screens${screens.mobile ? ' has-phone' : ''}`}>
+  <div class="screens-stage">
+    <div class="browser">
+      <div class="browser-bar" aria-hidden="true"><span class="browser-dots"><i></i><i></i><i></i></span><span class="browser-url">{screens.label}</span></div>
+      <img
+        src={fallbackSrc(screens.desktop)}
+        srcset={srcset(screens.desktop)}
+        sizes="(min-width: 1440px) 1240px, (min-width: 768px) 88vw, 100vw"
+        width={screens.desktop.width}
+        height={screens.desktop.height}
+        alt={screens.desktop.alt}
+        loading={loading}
+        decoding="async"
+      />
+    </div>
+    {screens.mobile && <div class="phone">
+      <img
+        src={fallbackSrc(screens.mobile)}
+        srcset={srcset(screens.mobile)}
+        sizes="(min-width: 1024px) 220px, (min-width: 768px) 24vw, 70vw"
+        width={screens.mobile.width}
+        height={screens.mobile.height}
+        alt={screens.mobile.alt}
+        loading={loading}
+        decoding="async"
+      />
+    </div>}
+  </div>
+  <figcaption class="figure-caption"><span class="meta">{figure && `${ui.figure} ${figure} — `}{screens.label}</span><span>{screens.caption}</span></figcaption>
+</figure>

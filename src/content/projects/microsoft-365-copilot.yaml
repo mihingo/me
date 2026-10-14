@@ -1,0 +1,60 @@
+name: Shared reasoning experience for Microsoft 365 Copilot agents
+shortName: Microsoft 365 Copilot
+slug: microsoft-365-copilot
+kicker: Microsoft · 2021 – present
+role: Initiated and led the engineering effort. Primary engineering owner, later co-lead as the effort scaled.
+status: shipped
+statusNote: Architecture through GA
+layout: split
+summary: Standardising how LLM reasoning is presented across Microsoft 365 Copilot agents — for first- and third-party agents, in Teams, Outlook, Word and PowerPoint.
+highlights:
+  - Scaled the shared reasoning experience across Teams, Outlook, Word and PowerPoint, for first- and third-party agents.
+  - "Built reusable platform frameworks and developer abstractions: plug-and-play APIs, reusable components, agentic workflow abstractions."
+  - "Authored specs and cross-team architecture guidance: service-client contracts, message consistency, rollout dependencies, production blockers."
+  - Designed product telemetry (engagement, latency, dwell time, step interactions) that informed staged rollout and GA decisions.
+  - Established Playwright-based end-to-end regression coverage.
+outcome: Taken from early architecture through general availability.
+stack:
+  - React
+  - TypeScript
+  - Fluent UI v9
+  - Zustand
+  - GraphQL
+  - Playwright
+  - Storybook
+  - KQL / Azure Data Explorer
+architecture:
+  label: Scope of the shared reasoning experience
+  description: A conceptual view of the scope described above — one shared reasoning experience serving first- and third-party agents across four Microsoft 365 surfaces. Not an internal architecture diagram.
+  nodes:
+    - id: first-party
+      label: First-party agents
+    - id: third-party
+      label: Third-party agents
+    - id: reasoning
+      label: Shared reasoning experience
+      detail: Reusable components & APIs
+    - id: teams
+      label: Teams
+    - id: outlook
+      label: Outlook
+    - id: word
+      label: Word
+    - id: powerpoint
+      label: PowerPoint
+  edges:
+    - { from: first-party, to: reasoning }
+    - { from: third-party, to: reasoning }
+    - { from: reasoning, to: teams }
+    - { from: reasoning, to: outlook }
+    - { from: reasoning, to: word }
+    - { from: reasoning, to: powerpoint }
+comparison:
+  label: Also at Microsoft — load time of a key Microsoft 365 app
+  unit: seconds
+  before: { label: Before, value: 4, display: about 4 s }
+  after: { label: After, value: 1.5, display: under 1.5 s }
+  caption: Over 60% faster, measured with the Browser Performance API.
+featured: true
+inResume: false
+order: 2

@@ -1,0 +1,32 @@
+---
+import { SunMoon } from '@lucide/astro';
+import { ui } from '../config/ui';
+---
+<label class="theme-control" data-theme-control hidden>
+  <SunMoon size={17} aria-hidden="true" />
+  <span class="sr-only">{ui.theme}</span>
+  <select aria-label={ui.theme}>
+    {Object.entries(ui.themes).map(([value, label]) => <option value={value}>{label}</option>)}
+  </select>
+</label>
+<script>
+  const control = document.querySelector<HTMLElement>('[data-theme-control]');
+  const select = control?.querySelector('select');
+  if (control && select) {
+    control.hidden = false;
+    select.value = document.documentElement.dataset.theme || 'system';
+    select.addEventListener('change', () => {
+      document.documentElement.dataset.theme = select.value;
+      try { localStorage.setItem('portfolio-theme', select.value); }
+      catch (error) { console.warn('Theme preference could not be saved in this browser.', error); }
+    });
+    window.addEventListener('storage', (event) => {
+      if (event.key !== 'portfolio-theme') return;
+      const value = event.newValue || 'system';
+      if (['system', 'dark', 'light'].includes(value)) {
+        select.value = value;
+        document.documentElement.dataset.theme = value;
+      }
+    });
+  }
+</script>

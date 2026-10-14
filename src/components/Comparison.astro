@@ -1,0 +1,24 @@
+---
+import type { Project } from '../lib/schemas';
+import { ui } from '../config/ui';
+interface Props { comparison: NonNullable<Project['comparison']>; figure?: string }
+const { comparison, figure } = Astro.props;
+const max = Math.max(comparison.before.value, comparison.after.value);
+const rows = [
+  { ...comparison.before, key: 'before' },
+  { ...comparison.after, key: 'after' },
+];
+---
+<figure class="comparison">
+  <figcaption class="figure-caption"><span class="meta">{figure && `${ui.figure} ${figure} — `}{comparison.label}</span></figcaption>
+  <dl class="comparison-rows">
+    {rows.map((row) => <div class={`comparison-row is-${row.key}`}>
+      <dt>{row.label}</dt>
+      <dd>
+        <span class="comparison-track" aria-hidden="true"><span class="comparison-bar" style={`--share: ${(row.value / max).toFixed(4)}`}></span></span>
+        <span class="comparison-value">{row.display}</span>
+      </dd>
+    </div>)}
+  </dl>
+  <p class="comparison-caption">{comparison.caption}</p>
+</figure>
