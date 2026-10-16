@@ -30,7 +30,7 @@ jobs:
         env:
           SITE_URL: https://example.com
           BASE_PATH: /portfolio/
-        run: pnpm build && pnpm exec playwright test --project=mobile-360 --grep 'content, dates|SEO, privacy'
+        run: pnpm build && pnpm exec playwright test --project=mobile-375 --grep 'identity|every link|SEO, privacy'
       - uses: actions/upload-artifact@v4
         if: always()
         with:
