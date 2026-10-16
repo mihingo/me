@@ -454,7 +454,7 @@ em { font-style: italic; }
 /* ---------- Print: a concise one-page résumé ---------- */
 @media print {
   @page { size: A4; margin: 11mm 12mm; }
-  :root, .on-dark { --background: #fff !important; --surface: #fff !important; --text: #111 !important; --muted: #444 !important; --border: #bbb !important; --accent: #1d34b0 !important; --rule: #ccc !important; --rule-strong: #888 !important; color-scheme: light !important; }
+  :root, .on-dark { --background: #fff !important; --surface: #fff !important; --text: #111 !important; --muted: #444 !important; --border: #bbb !important; --accent: #3a5400 !important; --rule: #ccc !important; --rule-strong: #888 !important; color-scheme: light !important; }
   html { font-size: 8.4pt; }
   body { font-family: Arial, sans-serif; line-height: 1.32; }
   .on-dark { background: #fff !important; color: #111 !important; }

@@ -46,19 +46,19 @@ seo:
   ogAlt: Kelvin Mihingo N. — Software Engineer building AI-agent platforms and the frontend systems behind them.
 theme:
   dark:
-    background: "#0A0D14"
-    surface: "#111621"
-    border: "#242B3A"
-    text: "#E8ECF3"
-    muted: "#98A2B5"
-    accent: "#8FA2FF"
+    background: "#0D0E0C"
+    surface: "#171914"
+    border: "#2A2D25"
+    text: "#ECEEE6"
+    muted: "#A0A496"
+    accent: "#C6F25A"
   light:
-    background: "#F4F6F9"
-    surface: "#FFFFFF"
-    border: "#D5DAE3"
-    text: "#0D1117"
-    muted: "#566070"
-    accent: "#2340D3"
+    background: "#FFFFFF"
+    surface: "#F6F6F5"
+    border: "#E2E2DF"
+    text: "#111310"
+    muted: "#53574D"
+    accent: "#456300"
   fonts:
     heading: Instrument Serif
     body: Inter Variable

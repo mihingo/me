@@ -101,14 +101,14 @@ test('theme persists before paint and follows the system when requested', async 
   await page.getByLabel('Color theme').selectOption('light');
   await page.reload();
   expect(await page.locator('html').getAttribute('data-theme')).toBe('light');
-  await expect(page.locator('body')).toHaveCSS('background-color', 'rgb(244, 246, 249)');
-  await expect(page.locator('#psms')).toHaveCSS('background-color', 'rgb(10, 13, 20)');
+  await expect(page.locator('body')).toHaveCSS('background-color', 'rgb(255, 255, 255)');
+  await expect(page.locator('#psms')).toHaveCSS('background-color', 'rgb(13, 14, 12)');
   await page.getByLabel('Color theme').selectOption('system');
   await page.emulateMedia({ colorScheme: 'dark' });
-  await expect(page.locator('body')).toHaveCSS('background-color', 'rgb(10, 13, 20)');
-  await expect(page.locator('#psms')).toHaveCSS('background-color', 'rgb(17, 22, 33)');
+  await expect(page.locator('body')).toHaveCSS('background-color', 'rgb(13, 14, 12)');
+  await expect(page.locator('#psms')).toHaveCSS('background-color', 'rgb(23, 25, 20)');
   await page.emulateMedia({ colorScheme: 'light' });
-  await expect(page.locator('body')).toHaveCSS('background-color', 'rgb(244, 246, 249)');
+  await expect(page.locator('body')).toHaveCSS('background-color', 'rgb(255, 255, 255)');
 });
 
 test('keyboard navigation, mobile menu and quick contact', async ({ page }) => {

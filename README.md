@@ -1,6 +1,6 @@
 # Kelvin Mihingo's portfolio
 
-A static, YAML-driven Astro portfolio, art-directed as a set of **working drawings** in a blueprint palette: cool grey-white paper, near-black ink, a single cobalt-blue accent, Instrument Serif statements over Inter and JetBrains Mono metadata, hairline rules, numbered plates and figures, and an engineering-drawing "title block" in the hero. Selected work is told as stories, not cards. Real screenshots, honest diagrams and measured numbers carry the evidence.
+A static, YAML-driven Astro portfolio, art-directed as a set of **working drawings** in a charcoal-and-lime palette: a pure white page with light grey panels, charcoal ink and a single accent (deep olive in light mode, electric lime in dark mode), Instrument Serif statements over Inter and JetBrains Mono metadata, hairline rules, numbered plates and figures, and an engineering-drawing "title block" in the hero. Selected work is told as stories, not cards. Real screenshots, honest diagrams and measured numbers carry the evidence.
 
 The home page answers, in order: who Kelvin is (hero + title block), what he has built (selected-work index, then three plates), how he works (principles with evidence), what he can do (capabilities backed by that work), why to trust him (track record), and how to reach him (contact).
 
