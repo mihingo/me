@@ -20,17 +20,15 @@ jobs:
       - run: pnpm exec playwright install --with-deps chromium
       - run: pnpm check && pnpm test:unit && pnpm build
       - run: pnpm test:e2e
-      - run: pnpm test:config
-      - run: pnpm test:form
       - run: pnpm budget
       - name: Select audit browser
         run: echo "CHROME_PATH=$(node -e "console.log(require('@playwright/test').chromium.executablePath())")" >> "$GITHUB_ENV"
       - run: pnpm lighthouse
       - name: Test GitHub Pages subpath
         env:
-          SITE_URL: https://example.com
-          BASE_PATH: /portfolio/
-        run: pnpm build && pnpm exec playwright test --project=mobile-375 --grep 'identity|every link|SEO, privacy'
+          SITE_URL: https://mihingo.github.io
+          BASE_PATH: /me/
+        run: pnpm build && pnpm exec playwright test --project=mobile-375 --grep 'identity|every link|SEO, zero'
       - uses: actions/upload-artifact@v4
         if: always()
         with:

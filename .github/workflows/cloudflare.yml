@@ -33,7 +33,6 @@ jobs:
         env:
           SITE_URL: ${{ vars.CLOUDFLARE_SITE_URL }}
           BASE_PATH: /
-          PUBLIC_FORMSPREE_ENDPOINT: ${{ vars.PUBLIC_FORMSPREE_ENDPOINT }}
         run: pnpm check && pnpm test:unit && pnpm build
       - uses: cloudflare/wrangler-action@v3
         with:

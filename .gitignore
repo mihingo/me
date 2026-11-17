@@ -8,6 +8,5 @@ playwright-report/
 test-results/
 .lighthouseci/
 public/og.png
-public/resume.pdf
 public/favicon.svg
 .DS_Store
