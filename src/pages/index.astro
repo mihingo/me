@@ -32,7 +32,7 @@ loading="eager" class="portrait" />
 <section id="work" class="section" aria-labelledby="work-title">
 <div class="section-heading">
 <h2 id="work-title">Selected work</h2>
-<span class="eyebrow">01 &mdash                                                                                         ; {String(projects.length).padStart(2, '0')}</span>
+<span class="eyebrow">01 &mdash; {String(projects.length).padStart(2, '0')}</span>
 </div>
 <div class="work-list">
 {projects.map((project, index) => <article id={project.slug} class="project" aria-labelledby={`${project.slug}-title`}>
@@ -61,11 +61,11 @@ loading="eager" class="portrait" />
 <section id="experience" class="section" aria-labelledby="experience-title">
 <div class="section-heading">
 <h2 id="experience-title">Along the way</h2>
-<a class="text-link" href={localPath(site.resume.path)} target="_blank" rel="noopener noreferrer">Full r&eacute    ;sum&eacute;<Arrow /></a>
+<a class="text-link" href={localPath(site.resume.path)} target="_blank" rel="noopener noreferrer">Full resume<Arrow /></a>
 </div>
 <ol class="experience-list">
 {roles.map((role) => <li class="experience-row">
-<p class="role-dates"><time datetime={role.start}>{formatMonth(role.start)}</time><span aria-hidden="true"> &mdash ; </span><span class="sr-only"> to </span>{role.end === 'present' ? <span class="present">Now</span> : <time datetime={role.end}>{formatMonth(role.end)}</time>}</p>
+<p class="role-dates"><time datetime={role.start}>{formatMonth(role.start)}</time><span aria-hidden="true"> &mdash; </span><span class="sr-only"> to </span>{role.end === 'present' ? <span class="present">Now</span> : <time datetime={role.end}>{formatMonth(role.end)}</time>}</p>
 <h3>{role.company}</h3>
 <div class="role-detail"><p>{role.title}</p><p>{role.focus}</p></div>
 </li>)}

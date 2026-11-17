@@ -19,13 +19,24 @@ test('identity, concise linear content and the original resume', async ({ page, 
   const portrait = page.getByRole('img', { name: 'Portrait of Kelvin Mihingo' });
   await expect.poll(() => portrait.evaluate((image: HTMLImageElement) => image.complete && image.naturalWidth > 0)).toBe(true);
   expect(await portrait.evaluate((image: HTMLImageElement) => image.currentSrc)).toMatch(/\.webp$/);
-  const resumeHref = await page.getByRole('link', { name: 'Full résumé' }).getAttribute('href');
+  const resumeHref = await page.getByRole('link', { name: 'Full resume' }).getAttribute('href');
   const resume = await request.get(resumeHref!);
   expect(resume.ok()).toBe(true);
   const bytes = await resume.body();
   expect(bytes.equals(readFileSync('public/resume.pdf')), 'build must not regenerate or replace the supplied resume').toBe(true);
   expect((await PDFDocument.load(bytes)).getPageCount()).toBeGreaterThan(0);
   expect(errors).toEqual([]);
+});
+
+test('resume labels and dash separators render without broken character codes', async ({ page }) => {
+  await page.goto('./');
+  await expect(page.locator('.resume-link')).toHaveText('Resume');
+  await expect(page.getByRole('link', { name: 'Full resume', exact: true })).toBeVisible();
+  await expect(page.locator('#work .section-heading > .eyebrow')).toHaveText(/^01 — \d{2}$/);
+  for (const separator of await page.locator('.role-dates > [aria-hidden="true"]').all()) {
+    await expect(separator).toHaveText('—');
+  }
+  expect(await page.locator('main').innerText()).not.toMatch(/&(?:[a-z]+|#\d+|#x[\da-f]+)\s*;/i);
 });
 
 test('every link resolves and old project URLs lead to the corresponding work', async ({ page, request }) => {
@@ -70,8 +81,10 @@ test('project, social and resume links open isolated new tabs', async ({ page, c
   }
 });
 
-test('responsive layout has no overflow or undersized links', async ({ page }) => {
-  const widths = page.viewportSize()!.width === 375 ? [320, 360, 375] : [page.viewportSize()!.width];
+test('responsive layout has readable typography, no overflow or undersized links', async ({ page }) => {
+  const viewportWidth = page.viewportSize()!.width;
+  const widths = viewportWidth === 375 ? [320, 360, 375]
+    : viewportWidth === 1366 ? [1024, 1280, 1366, 1440] : [viewportWidth];
   for (const width of widths) {
     await page.setViewportSize({ width, height: 900 });
     await page.goto('./');
@@ -83,6 +96,20 @@ test('responsive layout has no overflow or undersized links', async ({ page }) =
         if (!link.checkVisibility() || link.classList.contains('skip-link')) continue;
         const rect = link.getBoundingClientRect();
         if (rect.height < 43.9 || rect.width < 23.9) issues.push(`Small target: ${link.textContent?.trim()} (${rect.width}x${rect.height})`);
+      }
+      if (innerWidth >= 1024) {
+        const minimumSizes: [string, number][] = [
+          ['.project-summary', 17],
+          ['.project-outcome, .role-detail p, .education p, .current, .site-header a, .social-links a, .text-link, .open-source a, .open-source p', 16],
+          ['.eyebrow, .index-number, .stack li, .project-meta, .role-dates, .site-footer', 14],
+        ];
+        for (const [selector, minimum] of minimumSizes) {
+          for (const element of document.querySelectorAll<HTMLElement>(selector)) {
+            if (!element.checkVisibility()) continue;
+            const size = Number.parseFloat(getComputedStyle(element).fontSize);
+            if (size < minimum) issues.push(`Small text: ${element.textContent?.trim()} (${size}px < ${minimum}px)`);
+          }
+        }
       }
       return issues;
     });
@@ -111,7 +138,7 @@ test('keyboard navigation and the complete experience work without JavaScript', 
   }
   await expect(page.locator('.project')).toHaveCount(3);
   await expect(page.locator('.experience-row')).toHaveCount(5);
-  await expect(page.getByRole('link', { name: 'Full résumé' })).toHaveAttribute('target', '_blank');
+  await expect(page.getByRole('link', { name: 'Full resume' })).toHaveAttribute('target', '_blank');
   await context.close();
 });
 
