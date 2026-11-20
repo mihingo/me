@@ -27,6 +27,7 @@ test('identity, concise linear content and the original resume', async ({ page, 
   await expect(form.getByLabel('Name')).toHaveAttribute('required', '');
   await expect(form.getByLabel('Email')).toHaveAttribute('type', 'email');
   await expect(form.getByLabel('Message')).toHaveAttribute('minlength', '20');
+  await expect(form.getByRole('radio', { name: 'Role opportunity' })).toBeChecked();
 
   const portrait = page.getByRole('img', { name: 'Portrait of Kelvin Mihingo' });
   await expect.poll(() => portrait.evaluate((image: HTMLImageElement) => image.complete && image.naturalWidth > 0)).toBe(true);

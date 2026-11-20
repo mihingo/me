@@ -44,7 +44,7 @@ loading="eager" class="portrait" />
 <section id="work" class="section" aria-labelledby="work-title">
 <div class="section-heading">
 <h2 id="work-title">Selected work</h2>
-<span class="eyebrow">01 &mdash                                                                                                                                            ; {String(projects.length).padStart(2, '0')}</span>
+<span class="eyebrow">01 — {String(projects.length).padStart(2, '0')}</span>
 </div>
 <div class="work-list">
 {projects.map((project, index) => <article id={project.slug} class:list={['project', { 'project-featured': project.featured }]} aria-labelledby={`${project.slug}-title`}>
@@ -80,7 +80,7 @@ loading="eager" class="portrait" />
 </div>
 <ol class="experience-list">
 {roles.map((role) => <li class="experience-row">
-<p class="role-dates"><time datetime={role.start}>{formatMonth(role.start)}</time><span aria-hidden="true"> &mdash         ; </span><span class="sr-only"> to </span>{role.end === 'present' ? <span class="present">Now</span> : <time datetime={role.end}>{formatMonth(role.end)}</time>}</p>
+<p class="role-dates"><time datetime={role.start}>{formatMonth(role.start)}</time><span aria-hidden="true"> — </span><span class="sr-only"> to </span>{role.end === 'present' ? <span class="present">Now</span> : <time datetime={role.end}>{formatMonth(role.end)}</time>}</p>
 <h3>{role.company}</h3>
 <div class="role-detail"><p>{role.title}</p><p>{role.focus}</p></div>
 </li>)}
@@ -93,15 +93,29 @@ loading="eager" class="portrait" />
 </section>
 
 <section id="contact" class="contact" aria-labelledby="contact-title">
-<p class="eyebrow">Have something in mind?</p>
+<div class="contact-aside">
+<p class="eyebrow">Contact</p>
 <h2 id="contact-title">Have a complex challenge or building something ambitious? Let’s talk<span class="name-dot">.</span></h2>
 <p class="contact-intro">Share a little about the opportunity, product, or engineering challenge. I’ll reply directly.</p>
+<dl class="contact-details">
+<div><dt>Email</dt><dd><a class="email-link" href={`mailto:${site.email}`}>{site.email}</a></dd></div>
+<div><dt>Based in</dt><dd>{site.location} <span>· EAT (UTC+3)</span></dd></div>
+<div><dt>Elsewhere</dt><dd><ul class="social-links">{site.social.map((link) => <li><a href={link.url} target="_blank" rel="noopener noreferrer">{link.label}<Arrow /></a></li>)}</ul></dd></div>
+</dl>
+</div>
 <form class="contact-form" action="https://api.web3forms.com/submit" method="post" aria-labelledby="contact-title">
 <input type="hidden" name="access_key" value={web3formsAccessKey} />
 <input type="hidden" name="subject" value="New portfolio inquiry" />
 <input type="hidden" name="from_name" value="Kelvin Mihingo Portfolio" />
 <input type="hidden" name="redirect" value={contactSuccessUrl} />
 <input type="checkbox" name="botcheck" hidden tabindex="-1" autocomplete="off" />
+<fieldset class="contact-topic">
+<legend>What’s it about?</legend>
+{['Role opportunity', 'Consulting', 'Collaboration', 'Something else'].map((topic, index) => <label>
+<input type="radio" name="topic" value={topic} checked={index === 0} />
+<span>{topic}</span>
+</label>)}
+</fieldset>
 <div class="contact-field">
 <label for="contact-name">Name</label>
 <input id="contact-name" name="name" type="text" autocomplete="name" required maxlength="120" placeholder="Your name" />
@@ -115,13 +129,9 @@ loading="eager" class="portrait" />
 <textarea id="contact-message" name="message" required minlength="20" maxlength="3000" rows="5" placeholder="Tell me what you’re working on and how I can help."></textarea>
 </div>
 <div class="contact-submit">
-<p>By sending this form, you agree that I may use these details to respond to your inquiry. No mailing list.</p>
+<p>Your details are only used to reply. No mailing list.</p>
 <button type="submit">Send message <Arrow /></button>
 </div>
 </form>
-<div class="contact-bottom">
-<p class="contact-fallback">Prefer email? <a class="email-link" href={`mailto:${site.email}`}>{site.email}</a></p>
-<ul class="social-links">{site.social.map((link) => <li><a href={link.url} target="_blank" rel="noopener noreferrer">{link.label}<Arrow /></a></li>)}</ul>
-</div>
 </section>
 </Layout>
