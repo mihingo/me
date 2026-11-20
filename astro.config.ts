@@ -16,5 +16,7 @@ export default defineConfig({
   output: 'static',
   devToolbar: { enabled: false },
   trailingSlash: 'always',
-  integrations: [sitemap({ filter: (page) => !page.endsWith('/404/') && !page.includes('/projects/') })],
+  integrations: [sitemap({ filter: (page) =>
+    !page.endsWith('/404/') && !page.endsWith('/contact-success/') && !page.includes('/projects/'),
+  })],
 });

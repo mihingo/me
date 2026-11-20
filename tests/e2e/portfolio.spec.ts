@@ -17,7 +17,16 @@ test('identity, concise linear content and the original resume', async ({ page, 
   await expect(page.locator('.impact-strip')).toContainText('$5M+');
   await expect(page.locator('.experience-row').first()).toContainText('Aug 2026');
   await expect(page.locator('.experience-row').first()).toContainText('LLM post-training & evaluation');
-  expect((await page.locator('main').innerText()).split(/\s+/).length).toBeLessThan(450);
+  expect((await page.locator('main').innerText()).split(/\s+/).length).toBeLessThan(500);
+
+  const form = page.getByRole('form');
+  await expect(form).toHaveAttribute('action', 'https://api.web3forms.com/submit');
+  await expect(form).toHaveAttribute('method', 'post');
+  await expect(form.locator('input[name="access_key"]')).toHaveValue('YOUR_WEB3FORMS_ACCESS_KEY');
+  await expect(form.locator('input[name="redirect"]')).toHaveValue(/\/contact-success\/$/);
+  await expect(form.getByLabel('Name')).toHaveAttribute('required', '');
+  await expect(form.getByLabel('Email')).toHaveAttribute('type', 'email');
+  await expect(form.getByLabel('Message')).toHaveAttribute('minlength', '20');
 
   const portrait = page.getByRole('img', { name: 'Portrait of Kelvin Mihingo' });
   await expect.poll(() => portrait.evaluate((image: HTMLImageElement) => image.complete && image.naturalWidth > 0)).toBe(true);
@@ -56,9 +65,9 @@ test('every link resolves and project links open complete case studies', async (
     await page.goto(`projects/${slug}/`);
     await expect(page.locator('.case-study h1')).toBeVisible();
     await expect(page.getByRole('heading', { name: 'Building for the whole system' })).toBeVisible();
-    await expect(page.locator('.case-decisions li')).toHaveCount(3);
+    await expect(page.locator('.case-decisions li')).toHaveCount(slug === 'psms' ? 4 : 3);
   }
-  for (const path of ['og.png', 'favicon.svg', 'sitemap-index.xml', 'robots.txt']) {
+  for (const path of ['og.png', 'favicon.svg', 'sitemap-index.xml', 'robots.txt', 'contact-success/']) {
     expect((await request.get(path)).ok(), path).toBe(true);
   }
 });
@@ -146,8 +155,8 @@ test('keyboard navigation and the complete experience work without JavaScript', 
   await context.close();
 });
 
-test('WCAG AA accessibility on the portfolio and 404', async ({ page }) => {
-  for (const path of ['./', '404/']) {
+test('WCAG AA accessibility on the portfolio, success and 404 pages', async ({ page }) => {
+  for (const path of ['./', 'contact-success/', '404/']) {
     await page.goto(path);
     const scan = await new AxeBuilder({ page })
       .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa', 'best-practice']).analyze();

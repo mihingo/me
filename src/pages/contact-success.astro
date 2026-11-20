@@ -1,0 +1,12 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { localPath } from '../lib/content';
+---
+<Layout title="Message sent — Kelvin Mihingo" description="Your message has been sent to Kelvin Mihingo." noindex>
+  <section class="contact-success">
+    <p class="eyebrow">Message sent</p>
+    <h1>Thanks for reaching out<span>.</span></h1>
+    <p>I’ll review your message and get back to you as soon as possible.</p>
+    <a class="text-link" href={localPath('/')}>Back to the portfolio <span aria-hidden="true">&larr;</span></a>
+  </section>
+</Layout>
