@@ -4,6 +4,15 @@ category: Enterprise systems
 role: Backend Engineer
 period: 2019 – 2020
 summary: "Client: Kenya Power (KPLC) — payments, integrations, and utility services."
-outcome: Built the middleware to migrate $5M+ in legacy debt.
+outcome: Built the middleware used to migrate $5M+ in legacy debt.
+metric:
+  value: $5M+
+  label: Legacy debt migrated
+challenge: Replace fragile legacy payment workflows while preserving continuity for a national utility's customer and financial systems.
+contribution: I engineered the integration and payment middleware, translating legacy constraints into maintainable services and migration workflows.
+decisions:
+  - Isolated legacy dependencies behind a focused integration layer.
+  - Designed migration-safe APIs around existing financial workflows.
+  - Kept Oracle persistence and service behavior observable throughout the transition.
 stack: [Java, Spring Boot, Oracle]
 order: 3

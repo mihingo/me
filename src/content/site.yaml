@@ -2,8 +2,9 @@ name: Kelvin Mihingo N.
 firstName: Kelvin
 lastName: Mihingo
 role: Senior Software Engineer
-intro: I build frontend platforms, applied AI, and the systems behind them.
-current: FullStack and Applied AI at Microsoft
+intro: I design and deliver AI-powered platforms—from Microsoft 365 Copilot infrastructure to production public-safety systems.
+current: Full-stack systems and applied AI at Microsoft
+availability: Open to senior engineering and technical leadership conversations
 location: Nairobi, Kenya
 email: kmihingo22@gmail.com
 social:
@@ -18,11 +19,24 @@ education:
   degree: BSc Computer Science
   institution: University of Nairobi
   years: 2014 – 2018
+metrics:
+  - value: 60+
+    label: AI agents on shared infrastructure
+  - value: $5M+
+    label: Legacy debt migrated
+  - value: Global
+    label: Copilot platform rollout
+capabilities:
+  - Platform architecture
+  - Technical leadership
+  - Applied AI systems
+  - Frontend platforms
+  - Reliability and developer experience
 openSource:
   label: Kenya counties API
   url: https://github.com/mihingo/ke_counties
   description: A small Java API for Kenya's counties and subcounties.
 seo:
   title: Mihingo Kelvin — Software Engineer
-  description: Senior Software engineer in Nairobi. Frontend platforms, applied AI at Microsoft, and COPS, a unified platform for modern policing.
-  ogAlt: Kelvin Mihingo. Software Engineer. Frontend platforms and applied AI.
+  description: Senior software engineer in Nairobi building applied AI, platform infrastructure, and production systems at Microsoft and beyond.
+  ogAlt: Kelvin Mihingo. Senior software engineer building applied AI platforms.

@@ -17,15 +17,25 @@ const roles = orderedRoles(roleEntries.map((entry) => entry.data))              
 <Layout>
 <section class="intro" aria-labelledby="intro-title">
 <p class="eyebrow">{site.role} <span aria-hidden="true">/</span> {site.location}</p>
+<div class="intro-main">
+<div>
 <h1 id="intro-title">{site.firstName} <span>{site.lastName}<span class="name-dot" aria-hidden="true">.</span></span></h1>
-<div class="intro-bottom">
-<div class="intro-copy">
 <p class="intro-statement">{site.intro}</p>
-<p class="current"><span class="current-dot" aria-hidden="true"></span>{site.current}</p>
 </div>
-<Image src={portrait} alt="Portrait of Kelvin Mihingo" width={144} height={144}
-widths={[144, 288]} sizes="144px" format="webp" quality={80} fit="cover" position="top"
+<div class="intro-profile">
+<Image src={portrait} alt="Portrait of Kelvin Mihingo" width={176} height={176}
+widths={[176, 352]} sizes="176px" format="webp" quality={80} fit="cover" position="top"
 loading="eager" class="portrait" />
+<p class="current"><span class="current-dot" aria-hidden="true"></span>{site.current}</p>
+<a class="availability" href={`mailto:${site.email}`}>{site.availability}<Arrow /></a>
+</div>
+</div>
+<dl class="impact-strip">
+{site.metrics.map((metric) => <div><dt>{metric.value}</dt><dd>{metric.label}</dd></div>)}
+</dl>
+<div class="capability-line" aria-label="Core capabilities">
+<span class="eyebrow">I focus on</span>
+<ul>{site.capabilities.map((capability) => <li>{capability}</li>)}</ul>
 </div>
 </section>
 
@@ -35,20 +45,23 @@ loading="eager" class="portrait" />
 <span class="eyebrow">01 &mdash; {String(projects.length).padStart(2, '0')}</span>
 </div>
 <div class="work-list">
-{projects.map((project, index) => <article id={project.slug} class="project" aria-labelledby={`${project.slug}-title`}>
+{projects.map((project, index) => <article id={project.slug} class:list={['project', { 'project-featured': project.featured }]} aria-labelledby={`${project.slug}-title`}>
 <div class="project-index">
 <span class="index-number" aria-hidden="true">{String(index + 1).padStart(2, '0')}</span>
 <span class="eyebrow">{project.category}</span>
 </div>
 <div class="project-body">
-<h3 id={`${project.slug}-title`}>{project.link
-? <a href={project.link.url} class="project-title-link" target="_blank" rel="noopener noreferrer">{project.name}<Arrow /></a>
-: project.name}</h3>
+<h3 id={`${project.slug}-title`}><a href={localPath(`/projects/${project.slug}/`)} class="project-title-link">{project.name}<Arrow /></a></h3>
 <p class="project-summary">{project.summary}</p>
 <p class="project-outcome">{project.outcome}</p>
 <ul class="stack" aria-label={`${project.name} technologies`}>{project.stack.map((item) => <li>{item}</li>)}</ul>
 </div>
-<div class="project-meta"><span>{project.period}</span><span>{project.role}</span></div>
+<div class="project-meta">
+<span class="project-metric"><strong>{project.metric.value}</strong>{project.metric.label}</span>
+<span>{project.period}</span>
+<span>{project.role}</span>
+{project.link && <a class="external-project-link" href={project.link.url} target="_blank" rel="noopener noreferrer">{project.link.label}<Arrow /></a>}
+</div>
 </article>)}
 </div>
 <div class="open-source">
@@ -60,7 +73,7 @@ loading="eager" class="portrait" />
 
 <section id="experience" class="section" aria-labelledby="experience-title">
 <div class="section-heading">
-<h2 id="experience-title">Along the way</h2>
+<h2 id="experience-title">Experience</h2>
 <a class="text-link" href={localPath(site.resume.path)} target="_blank" rel="noopener noreferrer">Full resume<Arrow /></a>
 </div>
 <ol class="experience-list">
@@ -79,7 +92,7 @@ loading="eager" class="portrait" />
 
 <section id="contact" class="contact" aria-labelledby="contact-title">
 <p class="eyebrow">Have something in mind?</p>
-<h2 id="contact-title"><a href={`mailto:${site.email}`}>Let's talk.<Arrow /></a></h2>
+<h2 id="contact-title"><a href={`mailto:${site.email}`}>Build something consequential.<Arrow /></a></h2>
 <div class="contact-bottom">
 <a class="email-link" href={`mailto:${site.email}`}>{site.email}</a>
 <ul class="social-links">{site.social.map((link) => <li><a href={link.url} target="_blank" rel="noopener noreferrer">{link.label}<Arrow /></a></li>)}</ul>

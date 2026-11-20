@@ -8,13 +8,16 @@ test('identity, concise linear content and the original resume', async ({ page, 
   page.on('pageerror', (error) => errors.push(error.message));
   await page.goto('./');
   await expect(page.getByRole('heading', { level: 1 })).toHaveText('Kelvin Mihingo.');
-  await expect(page.locator('.current')).toHaveText('Applied AI at Microsoft');
+  await expect(page.locator('.current')).toHaveText('Full-stack systems and applied AI at Microsoft');
   await expect(page.locator('.project h3')).toHaveText(['COPS', 'Microsoft 365 Copilot', 'Minsait / Indra']);
-  await expect(page.locator('#psms .project-summary')).toHaveText('Command, Operations and Policing System.');
-  await expect(page.getByRole('link', { name: 'COPS', exact: true })).toHaveAttribute('href', 'https://kenya.psms.africa');
+  await expect(page.locator('#psms .project-summary')).toHaveText('Command, Operations and Public Safety System.');
+  await expect(page.getByRole('link', { name: 'COPS', exact: true })).toHaveAttribute('href', '/projects/psms/');
+  await expect(page.getByRole('link', { name: 'Visit COPS' })).toHaveAttribute('href', 'https://kenya.psms.africa');
+  await expect(page.locator('.impact-strip')).toContainText('60+');
+  await expect(page.locator('.impact-strip')).toContainText('$5M+');
   await expect(page.locator('.experience-row').first()).toContainText('Aug 2026');
   await expect(page.locator('.experience-row').first()).toContainText('LLM post-training & evaluation');
-  expect((await page.locator('main').innerText()).split(/\s+/).length).toBeLessThan(350);
+  expect((await page.locator('main').innerText()).split(/\s+/).length).toBeLessThan(450);
 
   const portrait = page.getByRole('img', { name: 'Portrait of Kelvin Mihingo' });
   await expect.poll(() => portrait.evaluate((image: HTMLImageElement) => image.complete && image.naturalWidth > 0)).toBe(true);
@@ -39,7 +42,7 @@ test('resume labels and dash separators render without broken character codes', 
   expect(await page.locator('main').innerText()).not.toMatch(/&(?:[a-z]+|#\d+|#x[\da-f]+)\s*;/i);
 });
 
-test('every link resolves and old project URLs lead to the corresponding work', async ({ page, request }) => {
+test('every link resolves and project links open complete case studies', async ({ page, request }) => {
   await page.goto('./');
   const hrefs = await page.locator('a[href]').evaluateAll((links) => links.map((link) => link.getAttribute('href')!));
   for (const href of new Set(hrefs)) {
@@ -51,8 +54,9 @@ test('every link resolves and old project URLs lead to the corresponding work', 
   }
   for (const slug of ['psms', 'microsoft-365-copilot', 'kenya-power']) {
     await page.goto(`projects/${slug}/`);
-    await expect(page).toHaveURL(new RegExp(`/#${slug}$`));
-    await expect(page.locator(`#${slug}`)).toBeInViewport();
+    await expect(page.locator('.case-study h1')).toBeVisible();
+    await expect(page.getByRole('heading', { name: 'Building for the whole system' })).toBeVisible();
+    await expect(page.locator('.case-decisions li')).toHaveCount(3);
   }
   for (const path of ['og.png', 'favicon.svg', 'sitemap-index.xml', 'robots.txt']) {
     expect((await request.get(path)).ok(), path).toBe(true);
@@ -65,7 +69,7 @@ test('project, social and resume links open isolated new tabs', async ({ page, c
     (route) => route.fulfill({ contentType: 'text/html', body: '<!doctype html><title>Link destination</title>' }));
   await page.goto('./');
   const portfolioUrl = page.url();
-  const links = page.locator('.project-title-link, .resume-link, .open-source a, .social-links a, #experience .text-link');
+  const links = page.locator('.external-project-link, .resume-link, .open-source a, .social-links a, #experience .text-link');
   await expect(links).toHaveCount(6);
   for (const link of await links.all()) {
     await expect(link).toHaveAttribute('target', '_blank');
@@ -137,7 +141,7 @@ test('keyboard navigation and the complete experience work without JavaScript', 
     await expect(page.locator(`#${id}`)).toBeInViewport();
   }
   await expect(page.locator('.project')).toHaveCount(3);
-  await expect(page.locator('.experience-row')).toHaveCount(5);
+  await expect(page.locator('.experience-row')).toHaveCount(4);
   await expect(page.getByRole('link', { name: 'Full resume' })).toHaveAttribute('target', '_blank');
   await context.close();
 });
@@ -161,7 +165,7 @@ test('SEO, zero runtime scripts, no third parties and reduced motion', async ({ 
   await page.goto('./');
   await expect(page.locator('meta[name="description"]')).toHaveAttribute('content', /Nairobi/);
   for (const selector of ['meta[name="description"]', 'meta[property="og:description"]', 'meta[name="twitter:description"]']) {
-    await expect(page.locator(selector)).toHaveAttribute('content', /COPS, a unified platform for modern policing/);
+    await expect(page.locator(selector)).toHaveAttribute('content', /Senior software engineer in Nairobi/i);
   }
   const origin = process.env.SITE_URL || 'https://mihingo.github.io';
   await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', new URL(new URL(baseURL!).pathname, origin).href);

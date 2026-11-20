@@ -3,7 +3,17 @@ slug: microsoft-365-copilot
 category: AI platforms
 role: Platform Engineer
 period: 2021 – 2026
-summary: One shared reasoning experience, across Microsoft 365.
-outcome: Co-led the global rollout. Shared infrastructure serving 60+ agents.
+featured: true
+summary: One shared reasoning experience across Microsoft 365.
+outcome: Co-led the global rollout and helped establish shared infrastructure serving 60+ agents.
+metric:
+  value: 60+
+  label: Agents supported
+challenge: Scale a consistent reasoning experience across independently developed Microsoft 365 agents while allowing teams to evolve their capabilities.
+contribution: I co-led the platform rollout, shaped the shared frontend and integration architecture, and partnered across product and engineering teams on production readiness.
+decisions:
+  - Centralized the reasoning interaction model so agents could share a consistent experience.
+  - Established typed data contracts and reusable platform primitives across teams.
+  - Invested in Storybook and Playwright coverage to make changes safer at global scale.
 stack: [React, TypeScript, GraphQL, Relay, Storybook, Playwright, .NET]
 order: 2

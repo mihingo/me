@@ -4,7 +4,16 @@ category: Public safety
 role: Founding Engineer
 period: 2024 – now
 summary: Command, Operations and Public Safety System.
-outcome: Built end to end, from public reporting to AI-assisted case workflows.
+outcome: Led the system from public reporting to AI-assisted operational case workflows.
+metric:
+  value: End-to-end
+  label: Product and platform ownership
+challenge: Create a dependable public-safety platform connecting public reports, operational teams, and case workflows without fragmenting the experience.
+contribution: I founded the engineering effort and own the product architecture across the frontend, API, data model, cloud infrastructure, and delivery pipeline.
+decisions:
+  - Designed a typed GraphQL boundary to keep complex workflows coherent across teams.
+  - Applied AI to assist case handling while preserving clear operational control.
+  - Built the platform on managed Azure services and containerized delivery for maintainability.
 stack: [Next.js, C# (.NET), GraphQL(HotChocolate), PostgreSQL, Azure, Docker]
 link:
   label: Visit COPS

@@ -16,8 +16,8 @@ test('rejects missing, invalid and reversed employment dates', () => {
 });
 
 test('orders published roles and work without mutating their source', () => {
-  const first = { ...role, title: 'First', start: '2020-01', end: '2020-12' };
-  const current = { ...role, title: 'Current', start: '2026-08', end: 'present' };
+  const first = { ...role, title: 'First', start: '2020-01', end: '2020-12', visible: true };
+  const current = { ...role, title: 'Current', start: '2026-08', end: 'present', visible: true };
   const hidden = { ...current, title: 'Draft', visible: false };
   const input = [first, hidden, current];
   assert.deepEqual(orderedRoles(input).map((entry) => entry.title), ['Current', 'First']);
