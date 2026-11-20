@@ -14,7 +14,7 @@ const site = siteEntry.data                                                     
 const projects = orderedProjects(projectEntries.map((entry) => entry.data))                                               ;
 const roles = orderedRoles(roleEntries.map((entry) => entry.data))                                                        ;
 const web3formsAccessKey = import.meta.env.PUBLIC_WEB3FORMS_ACCESS_KEY || 'YOUR_WEB3FORMS_ACCESS_KEY';
-const contactSuccessUrl = new URL(localPath('/contact-success/'), Astro.site).href;
+const contactSuccessUrl = new URL(localPath('/contact-success/'), Astro.site).href                                        ;
 ---
 <Layout>
 <section class="intro" aria-labelledby="intro-title">
@@ -44,7 +44,7 @@ loading="eager" class="portrait" />
 <section id="work" class="section" aria-labelledby="work-title">
 <div class="section-heading">
 <h2 id="work-title">Selected work</h2>
-<span class="eyebrow">01 &mdash; {String(projects.length).padStart(2, '0')}</span>
+<span class="eyebrow">01 &mdash                                                                                                                                            ; {String(projects.length).padStart(2, '0')}</span>
 </div>
 <div class="work-list">
 {projects.map((project, index) => <article id={project.slug} class:list={['project', { 'project-featured': project.featured }]} aria-labelledby={`${project.slug}-title`}>
@@ -80,7 +80,7 @@ loading="eager" class="portrait" />
 </div>
 <ol class="experience-list">
 {roles.map((role) => <li class="experience-row">
-<p class="role-dates"><time datetime={role.start}>{formatMonth(role.start)}</time><span aria-hidden="true"> &mdash; </span><span class="sr-only"> to </span>{role.end === 'present' ? <span class="present">Now</span> : <time datetime={role.end}>{formatMonth(role.end)}</time>}</p>
+<p class="role-dates"><time datetime={role.start}>{formatMonth(role.start)}</time><span aria-hidden="true"> &mdash         ; </span><span class="sr-only"> to </span>{role.end === 'present' ? <span class="present">Now</span> : <time datetime={role.end}>{formatMonth(role.end)}</time>}</p>
 <h3>{role.company}</h3>
 <div class="role-detail"><p>{role.title}</p><p>{role.focus}</p></div>
 </li>)}
@@ -94,7 +94,7 @@ loading="eager" class="portrait" />
 
 <section id="contact" class="contact" aria-labelledby="contact-title">
 <p class="eyebrow">Have something in mind?</p>
-<h2 id="contact-title">Build something consequential<span class="name-dot">.</span></h2>
+<h2 id="contact-title">Have a complex challenge or building something ambitious? Let’s talk<span class="name-dot">.</span></h2>
 <p class="contact-intro">Share a little about the opportunity, product, or engineering challenge. I’ll reply directly.</p>
 <form class="contact-form" action="https://api.web3forms.com/submit" method="post" aria-labelledby="contact-title">
 <input type="hidden" name="access_key" value={web3formsAccessKey} />
