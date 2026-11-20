@@ -663,13 +663,19 @@ svg {
     0 0 0 3px rgba(36, 77, 224, 0.14),
     0 0 24px 0 rgba(36, 77, 224, 0.32);
 }
-.contact h2 .name-dot {
+.contact h2,
+.contact-success h1 {
+  isolation: isolate;
+}
+.contact h2 .name-dot,
+.contact-success h1 span {
   position: relative;
   text-shadow:
     0 0 6px rgba(36, 77, 224, 0.9),
     0 0 14px rgba(36, 77, 224, 0.6);
 }
-.contact h2 .name-dot::after {
+.contact h2 .name-dot::after,
+.contact-success h1 span::after {
   content: "";
   position: absolute;
   left: 50%;
