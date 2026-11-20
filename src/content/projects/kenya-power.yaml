@@ -1,9 +1,9 @@
-name: Kenya Power
+name: Minsait / Indra
 slug: kenya-power
 category: Enterprise systems
-role: Backend Engineer · Minsait
+role: Backend Engineer
 period: 2019 – 2020
-summary: Payments, integrations, and resilient utility services.
+summary: "Client: Kenya Power (KPLC) — payments, integrations, and utility services."
 outcome: Built the middleware to migrate $5M+ in legacy debt.
 stack: [Java, Spring Boot, Oracle]
 order: 3

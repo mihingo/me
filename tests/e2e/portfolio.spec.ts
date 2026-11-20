@@ -9,7 +9,7 @@ test('identity, concise linear content and the original resume', async ({ page, 
   await page.goto('./');
   await expect(page.getByRole('heading', { level: 1 })).toHaveText('Kelvin Mihingo.');
   await expect(page.locator('.current')).toHaveText('Applied AI at Microsoft');
-  await expect(page.locator('.project h3')).toHaveText(['COPS', 'Microsoft 365 Copilot', 'Kenya Power']);
+  await expect(page.locator('.project h3')).toHaveText(['COPS', 'Microsoft 365 Copilot', 'Minsait / Indra']);
   await expect(page.locator('#psms .project-summary')).toHaveText('Command, Operations and Policing System.');
   await expect(page.getByRole('link', { name: 'COPS', exact: true })).toHaveAttribute('href', 'https://kenya.psms.africa');
   await expect(page.locator('.experience-row').first()).toContainText('Aug 2026');
